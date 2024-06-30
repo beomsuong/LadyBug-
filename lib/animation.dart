@@ -17,7 +17,8 @@ class _MainPageState extends State<MainPage>
   late Animation<Offset> _animation;
   Offset _currentPosition = const Offset(100, 100);
   Offset _targetPosition = const Offset(100, 100);
-  List<Offset> itemList = [const Offset(100, 100), const Offset(200, 200)];
+
+  List<Offset> itemList = [const Offset(200, 100), const Offset(200, 200)];
 
   @override
   void initState() {
@@ -138,26 +139,22 @@ class PlayerCharacter extends CustomPainter {
     final Paint paint = Paint()
       ..color = Colors.blue
       ..style = PaintingStyle.fill;
+    final Rect rect =
+        Rect.fromLTWH(position.dx, position.dy, playerSize, playerSize);
 
-    final double startX = position.dx - playerSize / 2;
-    final double startY = position.dy - playerSize / 2;
-
-    final Rect rect = Rect.fromLTWH(startX, startY, playerSize, playerSize);
-
-    List<Offset> itemsToRemove = [];
+    List<Offset> itemsToRemove = []; //삭제 할 아이템 리스트
 
     for (int i = 0; i < itemList.length; i++) {
-      final itemRect = Rect.fromLTWH(itemList[i].dx + 10, itemList[i].dy + 10,
-          monsterSize - 30, monsterSize - 30);
+      final itemRect = Rect.fromLTWH(itemList[i].dx + 15, itemList[i].dy + 15,
+          monsterSize - 30, monsterSize - 30); //충돌 판정 조절하기
       if (rect.overlaps(itemRect)) {
+        //충돌 감지
         itemsToRemove.add(itemList[i]);
       }
     }
-
     for (var item in itemsToRemove) {
-      itemList.remove(item);
+      itemList.remove(item); //아이템 제거
     }
-
     canvas.drawRect(rect, paint);
   }
 
