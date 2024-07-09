@@ -1,16 +1,9 @@
 # lady_bug
 
-A new Flutter project.
+스마트폰 초창기에 출시되었던 레이디버그를 직접 구현해보는 프로젝트
 
-## Getting Started
+<span style="color:red">※게임 엔진인 Flame을 사용하지 않고 깡구현 예정</span>
+<span style="color:red">※기본만 비슷하게 하고 이후 커스터마이징 예정</span>
+<span style="color:red">※예쁜 디자인은 안할 예정</span>
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[블로그 포스팅](https://beomsuong.tistory.com/40)
