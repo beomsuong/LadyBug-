@@ -1,50 +1,51 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:lady_bug/data_class.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/item/item.dart';
-import 'package:lady_bug/item/item_model.dart';
 import 'package:lady_bug/main_page_view_model.dart';
 import 'package:lady_bug/player_character/player_character.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainPage extends StatefulWidget {
+final mainPageViewModelProvider =
+    ChangeNotifierProvider((ref) => MainPageViewModel());
+
+class MainPage extends ConsumerStatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  ConsumerState<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage>
+class _MainPageState extends ConsumerState<MainPage>
     with SingleTickerProviderStateMixin {
-  late MainPageViewModel _viewModel;
+  GameData gameData = GameData();
 
   @override
   void initState() {
     super.initState();
-    _viewModel = MainPageViewModel(vsync: this);
+    ref.read(mainPageViewModelProvider.notifier).build(this);
   }
 
   @override
   void dispose() {
-    _viewModel.dispose();
+    ref.read(mainPageViewModelProvider.notifier).dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = ref.watch(mainPageViewModelProvider);
     screenHeight = MediaQuery.sizeOf(context).height; // 화면 크기 변경하면 바로 변경
     screenWidth = MediaQuery.sizeOf(context).width; // 화면 크기 변경하면 바로 변경
     return Scaffold(
       body: Stack(
         children: [
           AnimatedBuilder(
-            animation: _viewModel,
+            animation: viewModel,
             builder: (context, child) {
               return CustomPaint(
-                painter: PlayerCharacter(
-                    _viewModel.currentPosition, _viewModel.itemList),
+                painter: PlayerCharacter(),
                 child: const SizedBox(
                   width: double.infinity,
                   height: double.infinity,
@@ -53,10 +54,10 @@ class _MainPageState extends State<MainPage>
             },
           ),
           AnimatedBuilder(
-            animation: _viewModel,
+            animation: viewModel,
             builder: (context, child) {
               return Stack(
-                children: _viewModel.itemList.map((item) {
+                children: gameData.itemList.map((item) {
                   return CustomPaint(
                     painter: ItemPainter(item),
                     child: const SizedBox(
@@ -75,7 +76,7 @@ class _MainPageState extends State<MainPage>
               child: Joystick(
                 mode: JoystickMode.all,
                 listener: (details) {
-                  _viewModel.updatePosition(details);
+                  viewModel.updatePosition(details);
                 },
               ),
             ),
@@ -84,7 +85,7 @@ class _MainPageState extends State<MainPage>
             alignment: Alignment.bottomRight,
             child: GestureDetector(
               onTap: () {
-                _viewModel.addItem();
+                viewModel.addItem();
               },
               child: Container(
                 color: Colors.amber,
