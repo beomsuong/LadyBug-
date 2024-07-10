@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: ShowFPS(
         alignment: Alignment.topRight,
-        visible: true,
+        visible: false,
         showChart: false,
         borderRadius: BorderRadius.all(Radius.circular(11)),
         child: MainPage(),

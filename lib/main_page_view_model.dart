@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
-import 'package:lady_bug/data_class.dart';
+import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
+import 'package:lady_bug/game_data/setting_data.dart';
 import 'package:lady_bug/item/item_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,7 +15,7 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
   late AnimationController _controller;
   late Animation<Offset> _animation;
   GameData gameData = GameData();
-
+  SettingData settingData = SettingData();
   @override
   void build(TickerProvider vsync) {
     _controller = AnimationController(
@@ -26,6 +27,11 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
       });
 
     Timer.periodic(const Duration(milliseconds: 10), (Timer timer) {
+      if (settingData.gameStop) {
+        return;
+      }
+      gameData.currentTime += 0.01; //게임 시간초
+
       debugPrint('아이템 갯수 : ${gameData.itemList.length}');
       List<ItemModel> itemsToRemove = [];
       for (var item in gameData.itemList) {
@@ -83,6 +89,10 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
         velocity: Offset(randomSpeedX, randomSpeedY),
         type: 1));
     notifyListeners();
+  }
+
+  void resetGame() {
+    gameData.gameReset();
   }
 
   @override

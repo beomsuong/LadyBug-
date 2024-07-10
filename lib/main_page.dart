@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
-import 'package:lady_bug/data_class.dart';
+import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
+import 'package:lady_bug/game_data/setting_data.dart';
 import 'package:lady_bug/item/item.dart';
 import 'package:lady_bug/main_page_view_model.dart';
 import 'package:lady_bug/player_character/player_character.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lady_bug/setting_dialog.dart';
 
 final mainPageViewModelProvider =
     ChangeNotifierProvider((ref) => MainPageViewModel());
@@ -20,6 +22,7 @@ class MainPage extends ConsumerStatefulWidget {
 class _MainPageState extends ConsumerState<MainPage>
     with SingleTickerProviderStateMixin {
   GameData gameData = GameData();
+  SettingData settingData = SettingData();
 
   @override
   void initState() {
@@ -93,6 +96,47 @@ class _MainPageState extends ConsumerState<MainPage>
                 width: 30,
               ),
             ),
+          ),
+          Row(
+            children: [
+              const Expanded(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    '점수',
+                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    gameData.currentTime.toStringAsFixed(2),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w900, fontSize: 30),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () async {
+                      settingData.gameStop = true;
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const SettingsDialog();
+                        },
+                      );
+                      settingData.gameStop = false;
+                    },
+                    icon: const Icon(Icons.menu_rounded),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

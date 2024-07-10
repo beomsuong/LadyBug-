@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lady_bug/data_class.dart';
+import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/item/item_model.dart';
 
