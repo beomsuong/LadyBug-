@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lady_bug/main_page.dart';
 import 'package:lady_bug/define.dart';
+import 'package:show_fps/show_fps.dart';
 
 void main() {
   runApp(
@@ -20,7 +21,14 @@ class MyApp extends StatelessWidget {
     screenWidth = MediaQuery.sizeOf(context).width;
     return const MaterialApp(
       title: 'Flutter Demo',
-      home: MainPage(),
+      debugShowCheckedModeBanner: false,
+      home: ShowFPS(
+        alignment: Alignment.topRight,
+        visible: true,
+        showChart: false,
+        borderRadius: BorderRadius.all(Radius.circular(11)),
+        child: MainPage(),
+      ),
     );
   }
 }

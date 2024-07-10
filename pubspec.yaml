@@ -37,6 +37,7 @@ dependencies:
   flutter_joystick: ^0.2.0
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
+  show_fps: ^1.0.6
 
 dev_dependencies:
   flutter_test:
