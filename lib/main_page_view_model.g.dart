@@ -6,7 +6,7 @@ part of 'main_page_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mainPageViewModelHash() => r'be377a227736e9010a65e72227fd2574db930566';
+String _$mainPageViewModelHash() => r'2e990d81604ccaac76161efb2e367ca107f33296';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,10 +29,11 @@ class _SystemHash {
   }
 }
 
-abstract class _$MainPageViewModel extends BuildlessAutoDisposeNotifier<void> {
+abstract class _$MainPageViewModel
+    extends BuildlessAutoDisposeAsyncNotifier<void> {
   late final TickerProvider vsync;
 
-  void build(
+  FutureOr<void> build(
     TickerProvider vsync,
   );
 }
@@ -42,7 +43,7 @@ abstract class _$MainPageViewModel extends BuildlessAutoDisposeNotifier<void> {
 const mainPageViewModelProvider = MainPageViewModelFamily();
 
 /// See also [MainPageViewModel].
-class MainPageViewModelFamily extends Family<void> {
+class MainPageViewModelFamily extends Family<AsyncValue<void>> {
   /// See also [MainPageViewModel].
   const MainPageViewModelFamily();
 
@@ -81,7 +82,7 @@ class MainPageViewModelFamily extends Family<void> {
 
 /// See also [MainPageViewModel].
 class MainPageViewModelProvider
-    extends AutoDisposeNotifierProviderImpl<MainPageViewModel, void> {
+    extends AutoDisposeAsyncNotifierProviderImpl<MainPageViewModel, void> {
   /// See also [MainPageViewModel].
   MainPageViewModelProvider(
     TickerProvider vsync,
@@ -112,7 +113,7 @@ class MainPageViewModelProvider
   final TickerProvider vsync;
 
   @override
-  void runNotifierBuild(
+  FutureOr<void> runNotifierBuild(
     covariant MainPageViewModel notifier,
   ) {
     return notifier.build(
@@ -137,7 +138,8 @@ class MainPageViewModelProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<MainPageViewModel, void> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<MainPageViewModel, void>
+      createElement() {
     return _MainPageViewModelProviderElement(this);
   }
 
@@ -155,13 +157,13 @@ class MainPageViewModelProvider
   }
 }
 
-mixin MainPageViewModelRef on AutoDisposeNotifierProviderRef<void> {
+mixin MainPageViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
   /// The parameter `vsync` of this provider.
   TickerProvider get vsync;
 }
 
 class _MainPageViewModelProviderElement
-    extends AutoDisposeNotifierProviderElement<MainPageViewModel, void>
+    extends AutoDisposeAsyncNotifierProviderElement<MainPageViewModel, void>
     with MainPageViewModelRef {
   _MainPageViewModelProviderElement(super.provider);
 

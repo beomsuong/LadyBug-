@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
@@ -16,8 +17,12 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
   late Animation<Offset> _animation;
   GameData gameData = GameData();
   SettingData settingData = SettingData();
+  final AudioPlayer backgroundPlayer = AudioPlayer(); //배경음악 객체
+  final AudioPlayer effectsPlayer = AudioPlayer(); //효과음 객체
+  final Map<String, AudioSource> effects = {}; //효과음 저장
+
   @override
-  void build(TickerProvider vsync) {
+  Future<void> build(TickerProvider vsync) async {
     _controller = AnimationController(
       vsync: vsync,
       duration: const Duration(milliseconds: 100),
@@ -30,7 +35,7 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
       if (settingData.gameStop) {
         return;
       }
-      gameData.currentTime += 0.01; //게임 시간초
+      gameData.currentTime += 0.01; // 게임 시간초
 
       debugPrint('아이템 갯수 : ${gameData.itemList.length}');
       List<ItemModel> itemsToRemove = [];
@@ -51,6 +56,53 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
       }
       notifyListeners();
     });
+
+    await _loadAudio();
+  }
+
+  ///오디오 파일 불러오고 재생
+  Future<void> _loadAudio() async {
+    try {
+      await backgroundPlayer.setAsset('assets/audios/game_music.mp3');
+      effects['game_start'] = AudioSource.asset('assets/audios/game_start.mp3');
+      effects['game_over'] = AudioSource.asset('assets/audios/game_over.mp3');
+    } catch (e) {
+      print("오디오 파일 초기화 오류: $e");
+    }
+    await Future.delayed(Duration.zero);
+    playBackgroundMusic();
+    playEffectSound('game_start');
+  }
+
+  ///배경음악 재생
+  void playBackgroundMusic() {
+    try {
+      backgroundPlayer.setLoopMode(LoopMode.one);
+      backgroundPlayer.play();
+    } catch (e) {
+      print("배경 음악 재생 오류: $e");
+    }
+  }
+
+  ///특정 효과음 재생
+  Future<void> playEffectSound(String effectName) async {
+    try {
+      final source = effects[effectName];
+      if (source != null) {
+        await effectsPlayer.setAudioSource(source);
+        await Future.delayed(Duration.zero);
+        effectsPlayer.play();
+      }
+    } catch (e) {
+      print("효과음 재생 오류: $e");
+    }
+  }
+
+  ///배경음악 소리 조절
+  void setAudioVolume(double volume) {
+    backgroundPlayer.setVolume(volume);
+    effectsPlayer.setVolume(volume);
+    notifyListeners();
   }
 
   void updatePosition(StickDragDetails details) {
@@ -66,10 +118,10 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
       moveY = 0;
     }
     gameData.targetPosition += Offset(moveX * playerSpeed, moveY * playerSpeed);
-    _animateToPosition();
+    animateToPosition();
   }
 
-  void _animateToPosition() {
+  void animateToPosition() {
     _animation = Tween<Offset>(
       begin: gameData.currentPosition,
       end: gameData.targetPosition,
@@ -93,11 +145,15 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
 
   void resetGame() {
     gameData.gameReset();
+    playBackgroundMusic();
+    playEffectSound('game_start');
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    backgroundPlayer.dispose();
+    effectsPlayer.dispose();
     super.dispose();
   }
 }
