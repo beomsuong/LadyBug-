@@ -11,14 +11,10 @@ class VolumeSettingsDialog extends ConsumerStatefulWidget {
 }
 
 class _VolumeSettingsDialogState extends ConsumerState<VolumeSettingsDialog> {
-  double? _volume;
-
   @override
   void initState() {
     super.initState();
     final viewModel = ref.read(mainPageViewModelProvider);
-
-    _volume = viewModel.soundViewModel.backgroundPlayer.volume;
   }
 
   @override
@@ -45,17 +41,17 @@ class _VolumeSettingsDialogState extends ConsumerState<VolumeSettingsDialog> {
             style: TextStyle(color: Colors.white),
           ),
           Slider(
-            value: _volume!,
+            value: viewModel.settingData.gameVolume,
             onChanged: (value) {
               setState(() {
-                _volume = value;
+                viewModel.settingData.gameVolume = value;
               });
               viewModel.soundViewModel.setAudioVolume(value);
             },
             min: 0.0,
             max: 1.0,
             divisions: 10,
-            label: '${(_volume! * 100).toInt()}%',
+            label: '${(viewModel.settingData.gameVolume * 100).toInt()}%',
           ),
         ],
       ),

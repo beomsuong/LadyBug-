@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lady_bug/game_data/setting_data.dart';
 import 'package:lady_bug/main_page.dart';
 import 'package:lady_bug/volume_settings_dialog.dart';
 
@@ -10,7 +9,6 @@ class SettingsDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(mainPageViewModelProvider);
-    SettingData settingData = SettingData();
 
     return AlertDialog(
       shape: const RoundedRectangleBorder(

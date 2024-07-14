@@ -14,6 +14,8 @@ class SoundViewModel {
   Future<void> initialize() async {
     try {
       await backgroundPlayer.setAsset('assets/audios/game_music.mp3');
+      backgroundPlayer.setLoopMode(LoopMode.one);
+
       effects['game_start'] = AudioSource.asset('assets/audios/game_start.mp3');
       effects['game_over'] = AudioSource.asset('assets/audios/game_over.mp3');
     } catch (e) {
@@ -27,8 +29,11 @@ class SoundViewModel {
   ///배경음악 재생
   void playBackgroundMusic() {
     try {
-      backgroundPlayer.setLoopMode(LoopMode.one);
-      backgroundPlayer.play();
+      if (!backgroundPlayer.playing) {
+        backgroundPlayer.play();
+      } else {
+        backgroundPlayer.stop();
+      }
     } catch (e) {
       debugPrint("배경 음악 재생 오류: $e");
     }
