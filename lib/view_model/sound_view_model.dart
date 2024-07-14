@@ -10,17 +10,8 @@ class SoundViewModel {
     initialize();
   }
 
+  //사운드 로딩 및 시작
   Future<void> initialize() async {
-    try {
-      await backgroundPlayer.setAsset('assets/audios/game_music.mp3');
-      backgroundPlayer.setLoopMode(LoopMode.one);
-    } catch (e) {
-      debugPrint("오디오 파일 초기화 오류: $e");
-    }
-  }
-
-  ///오디오 파일 불러오고 재생
-  Future<void> loadAudio() async {
     try {
       await backgroundPlayer.setAsset('assets/audios/game_music.mp3');
       effects['game_start'] = AudioSource.asset('assets/audios/game_start.mp3');

@@ -59,7 +59,7 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
 
       notifyListeners();
     });
-    soundViewModel.loadAudio();
+    // soundViewModel;
   }
 
   ///오디오 파일 불러오고 재생
