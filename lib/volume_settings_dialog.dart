@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lady_bug/main_page.dart';
+import 'package:lady_bug/view_model/sound_view_model.dart';
 
 class VolumeSettingsDialog extends ConsumerStatefulWidget {
   const VolumeSettingsDialog({super.key});
@@ -16,7 +17,8 @@ class _VolumeSettingsDialogState extends ConsumerState<VolumeSettingsDialog> {
   void initState() {
     super.initState();
     final viewModel = ref.read(mainPageViewModelProvider);
-    _volume = viewModel.backgroundPlayer.volume;
+
+    _volume = viewModel.soundViewModel.backgroundPlayer.volume;
   }
 
   @override
@@ -48,7 +50,7 @@ class _VolumeSettingsDialogState extends ConsumerState<VolumeSettingsDialog> {
               setState(() {
                 _volume = value;
               });
-              viewModel.setAudioVolume(value);
+              viewModel.soundViewModel.setAudioVolume(value);
             },
             min: 0.0,
             max: 1.0,

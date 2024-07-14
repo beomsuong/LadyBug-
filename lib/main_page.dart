@@ -4,7 +4,7 @@ import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
 import 'package:lady_bug/item/item.dart';
-import 'package:lady_bug/main_page_view_model.dart';
+import 'package:lady_bug/view_model/main_page_view_model.dart';
 import 'package:lady_bug/player_character/player_character.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lady_bug/setting_dialog.dart';
