@@ -6,6 +6,7 @@ import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lady_bug/define.dart';
+import 'package:lady_bug/game_data/enemy/enemy_model.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
 import 'package:lady_bug/item/item_model.dart';
@@ -35,33 +36,22 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
 
     Timer.periodic(const Duration(milliseconds: 10), (Timer timer) {
       if (settingData.gameStop) {
+        //정지상태면 타이머 X
         return;
       }
       gameData.currentTime += 0.01; // 게임 시간초
 
-      debugPrint('아이템 갯수 : ${gameData.itemList.length}');
-      List<ItemModel> itemsToRemove = [];
-      for (var item in gameData.itemList) {
-        item.currentPosition = Offset(
-          item.currentPosition.dx + item.velocity.dx,
-          item.currentPosition.dy + item.velocity.dy,
-        );
-        if (item.currentPosition.dx < 0 ||
-            item.currentPosition.dx > screenWidth ||
-            item.currentPosition.dy < 0 ||
-            item.currentPosition.dy > screenHeight) {
-          itemsToRemove.add(item);
-        }
-      }
-      for (var item in itemsToRemove) {
-        gameData.itemList.remove(item);
+      if ((gameData.currentTime * 100).toInt() % 30 == 0) {
+        addItem();
+        addEnemy();
       }
 
+      //debugPrint('가속도 : ${gameData.booster}');
+      updateItemsPosition();
+      updateEnemiesPosition();
       notifyListeners();
     });
   }
-
-  ///오디오 파일 불러오고 재생
 
   void updatePosition(StickDragDetails details) {
     double moveX = details.x, moveY = details.y;
@@ -75,7 +65,27 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
             details.y >= 0)) {
       moveY = 0;
     }
-    gameData.targetPosition += Offset(moveX * playerSpeed, moveY * playerSpeed);
+
+    if (gameData.booster > 0) {
+      //부스터 아이템  효과 지속 시
+      gameData.targetPosition +=
+          Offset(moveX * playerSpeed * 2, moveY * playerSpeed * 2);
+      gameData.booster -= moveX.abs() + moveY.abs();
+    } else if (gameData.booster < 0) {
+      //리버스 부스터 효과 지속 시
+      gameData.targetPosition +=
+          Offset(moveX * playerSpeed / 2, moveY * playerSpeed / 2);
+      gameData.booster += moveX.abs() + moveY.abs();
+    } else {
+      //평시 상황
+      gameData.targetPosition +=
+          Offset(moveX * playerSpeed, moveY * playerSpeed);
+    }
+
+    if (gameData.booster.abs() < 1) {
+      //속도 아이템 효과 종료
+      gameData.booster = 0;
+    }
     animateToPosition();
   }
 
@@ -89,6 +99,44 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
     _controller.forward();
   }
 
+  void updateItemsPosition() {
+    List<ItemModel> itemsToRemove = [];
+    for (var item in gameData.itemList) {
+      item.currentPosition = Offset(
+        item.currentPosition.dx + item.velocity.dx,
+        item.currentPosition.dy + item.velocity.dy,
+      );
+      if (item.currentPosition.dx < 0 ||
+          item.currentPosition.dx > screenWidth ||
+          item.currentPosition.dy < 0 ||
+          item.currentPosition.dy > screenHeight) {
+        itemsToRemove.add(item);
+      }
+    }
+    for (var item in itemsToRemove) {
+      gameData.itemList.remove(item);
+    }
+  }
+
+  void updateEnemiesPosition() {
+    List<EnemyModel> enemiesToRemove = [];
+    for (var enemy in gameData.enemyList) {
+      enemy.currentPosition = Offset(
+        enemy.currentPosition.dx + enemy.velocity.dx,
+        enemy.currentPosition.dy + enemy.velocity.dy,
+      );
+      if (enemy.currentPosition.dx < 0 ||
+          enemy.currentPosition.dx > screenWidth ||
+          enemy.currentPosition.dy < 0 ||
+          enemy.currentPosition.dy > screenHeight) {
+        enemiesToRemove.add(enemy);
+      }
+    }
+    for (var enemy in enemiesToRemove) {
+      gameData.enemyList.remove(enemy);
+    }
+  }
+
   void addItem() {
     var randomX = Random().nextDouble() * screenWidth;
     var randomY = Random().nextDouble() * screenHeight;
@@ -97,7 +145,29 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
     gameData.itemList.add(ItemModel(
         currentPosition: Offset(randomX, randomY),
         velocity: Offset(randomSpeedX, randomSpeedY),
-        type: 1));
+        type: ItemType.speedUp));
+
+    randomX = Random().nextDouble() * screenWidth;
+    randomY = Random().nextDouble() * screenHeight;
+    randomSpeedX = (Random().nextDouble() * speedLevel * 2) - speedLevel;
+    randomSpeedY = (Random().nextDouble() * speedLevel * 2) - speedLevel;
+    gameData.itemList.add(ItemModel(
+        currentPosition: Offset(randomX, randomY),
+        velocity: Offset(randomSpeedX, randomSpeedY),
+        type: ItemType.speedDown));
+    notifyListeners();
+  }
+
+  void addEnemy() {
+    var randomX = Random().nextDouble() * screenWidth;
+    var randomY = Random().nextDouble() * screenHeight;
+    var randomSpeedX = (Random().nextDouble() * speedLevel * 2) - speedLevel;
+    var randomSpeedY = (Random().nextDouble() * speedLevel * 2) - speedLevel;
+    gameData.enemyList.add(EnemyModel(
+        currentPosition: Offset(randomX, randomY),
+        velocity: Offset(randomSpeedX, randomSpeedY),
+        type: EnemyType.normal));
+
     notifyListeners();
   }
 

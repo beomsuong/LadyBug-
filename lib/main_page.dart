@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:lady_bug/game_data/enemy/enemy.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
@@ -72,6 +73,22 @@ class _MainPageState extends ConsumerState<MainPage>
               );
             },
           ),
+          AnimatedBuilder(
+            animation: viewModel,
+            builder: (context, child) {
+              return Stack(
+                children: gameData.enemyList.map((item) {
+                  return CustomPaint(
+                    painter: EnemyPainter(item),
+                    child: const SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          ),
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
@@ -81,19 +98,6 @@ class _MainPageState extends ConsumerState<MainPage>
                 listener: (details) {
                   viewModel.updatePosition(details);
                 },
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: GestureDetector(
-              onTap: () {
-                viewModel.addItem();
-              },
-              child: Container(
-                color: Colors.amber,
-                height: 30,
-                width: 30,
               ),
             ),
           ),

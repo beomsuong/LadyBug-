@@ -9,7 +9,6 @@ class SettingsDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = ref.watch(mainPageViewModelProvider);
-
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),

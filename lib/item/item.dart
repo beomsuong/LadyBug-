@@ -10,12 +10,19 @@ class ItemPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = Colors.black
+      ..color = itemColor()
       ..style = PaintingStyle.fill;
 
     final Rect rect = Rect.fromLTWH(itemModel.currentPosition.dx,
-        itemModel.currentPosition.dy, monsterSize, monsterSize);
+        itemModel.currentPosition.dy, itemSize, itemSize);
     canvas.drawRect(rect, paint);
+  }
+
+  Color itemColor() {
+    if (itemModel.type == ItemType.speedUp) {
+      return Colors.red;
+    }
+    return Colors.black;
   }
 
   @override
