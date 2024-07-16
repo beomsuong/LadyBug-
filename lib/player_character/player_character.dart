@@ -49,7 +49,7 @@ class PlayerCharacter extends CustomPainter {
 
       if (rect.overlaps(enemyRect)) {
         //충돌 감지
-        print('적 충돌');
+        gameData.playerLife--;
         enemiesToRemove.add(gameData.enemyList[i]); //아이템 제거
       }
     }

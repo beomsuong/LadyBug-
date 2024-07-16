@@ -103,12 +103,23 @@ class _MainPageState extends ConsumerState<MainPage>
           ),
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: Text(
-                    '점수',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                      Text(
+                        viewModel.gameData.playerLife.toString(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 30),
+                      ),
+                    ],
                   ),
                 ),
               ),

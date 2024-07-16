@@ -35,17 +35,19 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
       });
 
     Timer.periodic(const Duration(milliseconds: 10), (Timer timer) {
-      if (settingData.gameStop) {
+      if (settingData.gameStop || gameData.playerLife <= 0) {
         //정지상태면 타이머 X
         return;
       }
       gameData.currentTime += 0.01; // 게임 시간초
 
-      if ((gameData.currentTime * 100).toInt() % 30 == 0) {
+      if ((gameData.currentTime * 100).toInt() % 50 == 0) {
         addItem();
-        addEnemy();
       }
 
+      if ((gameData.currentTime * 100).toInt() % 15 == 0) {
+        addEnemy();
+      }
       //debugPrint('가속도 : ${gameData.booster}');
       updateItemsPosition();
       updateEnemiesPosition();
@@ -161,8 +163,8 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
   void addEnemy() {
     var randomX = Random().nextDouble() * screenWidth;
     var randomY = Random().nextDouble() * screenHeight;
-    var randomSpeedX = (Random().nextDouble() * speedLevel * 2) - speedLevel;
-    var randomSpeedY = (Random().nextDouble() * speedLevel * 2) - speedLevel;
+    var randomSpeedX = (Random().nextDouble() * speedLevel * 3) - speedLevel;
+    var randomSpeedY = (Random().nextDouble() * speedLevel * 3) - speedLevel;
     gameData.enemyList.add(EnemyModel(
         currentPosition: Offset(randomX, randomY),
         velocity: Offset(randomSpeedX, randomSpeedY),
@@ -173,7 +175,7 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
 
   void resetGame() {
     gameData.gameReset();
-    soundViewModel.playBackgroundMusic();
+    soundViewModel.backgroundPlayer.play();
     soundViewModel.playEffectSound('game_start');
   }
 
