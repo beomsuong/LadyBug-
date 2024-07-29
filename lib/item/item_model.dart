@@ -12,4 +12,4 @@ class ItemModel {
       r});
 }
 
-enum ItemType { speedUp, speedDown }
+enum ItemType { speedUp, speedDown, circle }
