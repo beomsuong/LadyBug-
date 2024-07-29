@@ -166,10 +166,11 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
     randomY = Random().nextDouble() * screenHeight;
     randomSpeedX = (Random().nextDouble() * speedLevel * 2) - speedLevel;
     randomSpeedY = (Random().nextDouble() * speedLevel * 2) - speedLevel;
+
     gameData.itemList.add(ItemModel(
         currentPosition: Offset(randomX, randomY),
         velocity: Offset(randomSpeedX, randomSpeedY),
-        type: ItemType.circle));
+        type: ItemType.values[Random().nextInt(ItemType.values.length)]));
     notifyListeners();
   }
 
