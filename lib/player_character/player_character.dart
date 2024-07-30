@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lady_bug/game_data/circle_item.dart';
+import 'package:lady_bug/game_data/item_impact/circle_item.dart';
 import 'package:lady_bug/game_data/enemy/enemy_model.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
@@ -8,7 +8,6 @@ import 'package:lady_bug/item/item_model.dart';
 class PlayerCharacter extends CustomPainter {
   PlayerCharacter();
   GameData gameData = GameData();
-  CircleItem circleItem = CircleItem();
 
   ///플레이어 이동 + 적, 아이템 획득
   void drawingPlayer(Canvas canvas) {
@@ -39,17 +38,16 @@ class PlayerCharacter extends CustomPainter {
       } else if (rect.overlaps(itemRect) &&
           gameData.itemList[i].type == ItemType.circle) {
         //충돌 감지
-        gameData.booster = -10;
+        gameData.itemImpactList.add(CircleItemModel(
+            currentPosition: Offset(
+                gameData.currentPosition.dx + playerSize / 2,
+                gameData.currentPosition.dy + playerSize / 2)));
         itemsToRemove.add(gameData.itemList[i]);
       }
     }
     for (var item in itemsToRemove) {
-      if (item.type == ItemType.circle && !circleItem.on) {
-        circleItem.on = true;
-      }
       gameData.itemList.remove(item); //아이템 제거
     }
-
     List<EnemyModel> enemiesToRemove = []; //삭제 할 적 리스트
 
     for (int i = 0; i < gameData.enemyList.length; i++) {
@@ -71,57 +69,9 @@ class PlayerCharacter extends CustomPainter {
   }
 
   ///써클 아이템 확장 및 적 지우기
-  void drawingCircleItem(Canvas canvas) {
-    if (!circleItem.on) {
-      return;
-    }
-    final Paint abilityPaint1 = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 10;
-
-    final Paint abilityPaint2 = Paint()
-      ..color = Colors.transparent
-      ..style = PaintingStyle.stroke;
-
-    canvas.drawCircle(
-        Offset(gameData.currentPosition.dx + playerSize / 2,
-            gameData.currentPosition.dy + playerSize / 2),
-        circleItem.circleSize.toDouble(),
-        abilityPaint2);
-
-    final Rect rect1 = Rect.fromCircle(
-      center: Offset(gameData.currentPosition.dx + playerSize / 2,
-          gameData.currentPosition.dy + playerSize / 2),
-      radius: circleItem.circleSize.toDouble(),
-    );
-
-    final Rect rect2 = Rect.fromCircle(
-      center: Offset(gameData.currentPosition.dx + playerSize / 2,
-          gameData.currentPosition.dy + playerSize / 2),
-      radius: circleItem.circleSize.toDouble() - 10,
-    );
-
-    List<EnemyModel> enemiesToRemove = []; //삭제 할 적 리스트
-    for (int i = 0; i < gameData.enemyList.length; i++) {
-      final enemyRect = Rect.fromCircle(
-          center: gameData.enemyList[i].currentPosition,
-          radius: enemySize); //충돌 판정 조절하기
-
-      if (rect1.overlaps(enemyRect) && !rect2.overlaps(enemyRect)) {
-        enemiesToRemove.add(gameData.enemyList[i]);
-      }
-    }
-    for (var item in enemiesToRemove) {
-      gameData.enemyList.remove(item); // 적제거
-    }
-
-    canvas.drawCircle(rect1.center, rect1.width / 2, abilityPaint1);
-  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    drawingCircleItem(canvas);
     drawingPlayer(canvas);
   }
 

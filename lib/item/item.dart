@@ -35,7 +35,6 @@ class ItemPainter extends CustomPainter {
       }
     }
     path.close();
-
     canvas.drawPath(path, paint);
   }
 

@@ -6,7 +6,7 @@ import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lady_bug/define.dart';
-import 'package:lady_bug/game_data/circle_item.dart';
+import 'package:lady_bug/game_data/item_impact/circle_item.dart';
 import 'package:lady_bug/game_data/enemy/enemy_model.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
@@ -22,7 +22,6 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
   late Animation<Offset> _animation;
   GameData gameData = GameData();
   SettingData settingData = SettingData();
-  CircleItem circleItem = CircleItem();
 
   late SoundViewModel soundViewModel;
 
@@ -51,7 +50,6 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
       if ((gameData.currentTime * 100).toInt() % 15 == 0) {
         addEnemy();
       }
-      updateCircleItemSize();
       updateItemsPosition();
       updateEnemiesPosition();
       notifyListeners();
@@ -102,16 +100,6 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
 
     _controller.reset();
     _controller.forward();
-  }
-
-  void updateCircleItemSize() {
-    if (circleItem.on) {
-      circleItem.circleSize += 1;
-    }
-    if (circleItem.circleSize > 600) {
-      circleItem.circleSize = 0;
-      circleItem.on = false;
-    }
   }
 
   void updateItemsPosition() {

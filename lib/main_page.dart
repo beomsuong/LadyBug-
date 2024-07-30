@@ -3,6 +3,7 @@ import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:lady_bug/game_data/enemy/enemy.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
+import 'package:lady_bug/game_data/item_impact/item_impact.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
 import 'package:lady_bug/item/item.dart';
 import 'package:lady_bug/view_model/main_page_view_model.dart';
@@ -54,6 +55,22 @@ class _MainPageState extends ConsumerState<MainPage>
                   width: double.infinity,
                   height: double.infinity,
                 ),
+              );
+            },
+          ),
+          AnimatedBuilder(
+            animation: viewModel,
+            builder: (context, child) {
+              return Stack(
+                children: gameData.itemImpactList.map((model) {
+                  return CustomPaint(
+                    painter: ItemImpactPainter(model),
+                    child: const SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  );
+                }).toList(),
               );
             },
           ),
