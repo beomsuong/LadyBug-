@@ -45,6 +45,8 @@ class ItemPainter extends CustomPainter {
       return Colors.blue;
     } else if (itemModel.type == ItemType.circle) {
       return Colors.purple;
+    } else if (itemModel.type == ItemType.shield) {
+      return Colors.brown;
     }
     return Colors.black;
   }

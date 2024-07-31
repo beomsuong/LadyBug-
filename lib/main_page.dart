@@ -49,18 +49,6 @@ class _MainPageState extends ConsumerState<MainPage>
           AnimatedBuilder(
             animation: viewModel,
             builder: (context, child) {
-              return CustomPaint(
-                painter: PlayerCharacter(),
-                child: const SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              );
-            },
-          ),
-          AnimatedBuilder(
-            animation: viewModel,
-            builder: (context, child) {
               return Stack(
                 children: gameData.itemImpactList.map((model) {
                   return CustomPaint(
@@ -71,6 +59,18 @@ class _MainPageState extends ConsumerState<MainPage>
                     ),
                   );
                 }).toList(),
+              );
+            },
+          ),
+          AnimatedBuilder(
+            animation: viewModel,
+            builder: (context, child) {
+              return CustomPaint(
+                painter: PlayerCharacter(),
+                child: const SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
               );
             },
           ),
