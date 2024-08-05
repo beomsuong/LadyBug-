@@ -15,6 +15,7 @@ class GameData {
 
   int playerLife = 10;
   double booster = 0; //아이템 획득 시 가속 OR 감속
+  double shieldTime = 0;
 
   ///게임 리셋
   void gameReset() {

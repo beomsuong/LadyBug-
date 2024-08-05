@@ -3,7 +3,6 @@ import 'package:lady_bug/game_data/item_impact/circle_item.dart';
 import 'package:lady_bug/game_data/enemy/enemy_model.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
-import 'package:lady_bug/game_data/item_impact/shield_item.dart';
 import 'package:lady_bug/item/item_model.dart';
 
 class PlayerCharacter extends CustomPainter {
@@ -47,7 +46,8 @@ class PlayerCharacter extends CustomPainter {
       } else if (rect.overlaps(itemRect) &&
           gameData.itemList[i].type == ItemType.shield) {
         //충돌 감지
-        gameData.itemImpactList.add(ShieldItemModel());
+
+        gameData.shieldTime = 10;
         itemsToRemove.add(gameData.itemList[i]);
       }
     }

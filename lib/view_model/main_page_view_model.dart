@@ -52,6 +52,7 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
       }
       updateItemsPosition();
       updateEnemiesPosition();
+      updateItemsTime();
       notifyListeners();
     });
   }
@@ -100,6 +101,10 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
 
     _controller.reset();
     _controller.forward();
+  }
+
+  void updateItemsTime() {
+    gameData.shieldTime -= 0.01;
   }
 
   void updateItemsPosition() {

@@ -3,13 +3,11 @@ import 'package:lady_bug/define.dart';
 import 'package:lady_bug/game_data/enemy/enemy_model.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/game_data/item_impact/circle_item.dart';
-import 'package:lady_bug/game_data/item_impact/shield_item.dart';
 
 class ItemImpactPainter extends CustomPainter {
-  final dynamic itemImpactModel;
   GameData gameData = GameData();
 
-  ItemImpactPainter(this.itemImpactModel);
+  ItemImpactPainter();
 
   ///원 폭탄 그리기
   void drawingCircleItem(Canvas canvas, CircleItemModel circleItemModel) {
@@ -58,9 +56,9 @@ class ItemImpactPainter extends CustomPainter {
   }
 
   void drawingShieldItem(Canvas canvas) {
-    // if (shieldItem.itemTime <= 0) {
-    //   return;
-    // }
+    if (gameData.shieldTime <= 0) {
+      return;
+    }
     final Paint abilityPaint1 = Paint()
       ..color = Colors.yellow
       ..style = PaintingStyle.fill
@@ -99,11 +97,14 @@ class ItemImpactPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (itemImpactModel is CircleItemModel) {
-      ///원 폭탄인 경우
-      drawingCircleItem(canvas, itemImpactModel);
-    }
     drawingShieldItem(canvas);
+
+    for (var model in gameData.itemImpactList) {
+      if (model is CircleItemModel) {
+        ///원 폭탄인 경우
+        drawingCircleItem(canvas, model);
+      }
+    }
   }
 
   @override
