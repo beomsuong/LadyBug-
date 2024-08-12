@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/game_data/enemy/enemy_model.dart';
@@ -64,35 +66,57 @@ class ItemImpactPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..strokeWidth = 10;
 
-    //큰원 계산
-    final Rect rect1 = Rect.fromCircle(
-      center: Offset(gameData.currentPosition.dx, gameData.currentPosition.dy),
-      radius: 50,
+    final Offset center = Offset(
+      gameData.currentPosition.dx + playerSize / 2,
+      gameData.currentPosition.dy + playerSize / 2,
     );
 
-    List<EnemyModel> enemiesToRemove = []; //삭제 할 적 리스트
+    ///쉴드 회전
+    double rotationAngle = pi * gameData.shieldTime;
+
+    final Path trianglePath = Path();
+    for (int i = 0; i < 3; i++) {
+      double angle = 2 * pi / 3 * i - pi / 2;
+      final double x = center.dx + triangleSize * cos(angle);
+      final double y = center.dy + triangleSize * sin(angle);
+      if (i == 0) {
+        trianglePath.moveTo(x, y);
+      } else {
+        trianglePath.lineTo(x, y);
+      }
+    }
+    trianglePath.close();
+
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(rotationAngle);
+    canvas.translate(-center.dx, -center.dy);
+
+    canvas.drawPath(trianglePath, abilityPaint1);
+
+    canvas.restore();
+
+    // 충돌 판정
+    List<EnemyModel> enemiesToRemove = [];
     for (int i = 0; i < gameData.enemyList.length; i++) {
       final enemyRect = Rect.fromCircle(
-          center: gameData.enemyList[i].currentPosition,
-          radius: enemySize); //충돌 판정 조절하기
+        center: gameData.enemyList[i].currentPosition,
+        radius: enemySize, // 충돌 판정 조절하기
+      );
 
-      if (rect1.overlaps(enemyRect)) {
-        //큰원에 겹치고 작은 원에는 안겹치게
+      final Rect triangleBounds = Rect.fromPoints(
+        Offset(center.dx - triangleSize, center.dy - triangleSize),
+        Offset(center.dx + triangleSize, center.dy + triangleSize),
+      );
+
+      if (triangleBounds.overlaps(enemyRect)) {
         enemiesToRemove.add(gameData.enemyList[i]);
       }
     }
-    for (var item in enemiesToRemove) {
-      gameData.enemyList.remove(item); // 적제거
-    }
 
-    //원 그리기
-    canvas.drawCircle(
-        Offset(
-          gameData.currentPosition.dx + playerSize / 2,
-          gameData.currentPosition.dy + playerSize / 2,
-        ),
-        50,
-        abilityPaint1);
+    for (var item in enemiesToRemove) {
+      gameData.enemyList.remove(item); // 적 제거
+    }
   }
 
   @override
