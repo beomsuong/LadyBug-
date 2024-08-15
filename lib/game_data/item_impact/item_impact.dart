@@ -57,6 +57,7 @@ class ItemImpactPainter extends CustomPainter {
     canvas.drawCircle(rect1.center, rect1.width / 2, abilityPaint1);
   }
 
+  ///쉴드 그리기
   void drawingShieldItem(Canvas canvas) {
     if (gameData.shieldTime <= 0) {
       return;
