@@ -6,6 +6,8 @@ import 'package:lady_bug/item/item_model.dart';
 class GameData {
   static final GameData _instance = GameData._internal();
   double currentTime = 0.0;
+  bool gameEnd = false; //게임 오버
+
   Offset currentPosition = Offset(screenWidth / 2, screenHeight / 2);
   Offset targetPosition = Offset(screenWidth / 2, screenHeight / 2);
 
@@ -20,6 +22,7 @@ class GameData {
   ///게임 리셋
   void gameReset() {
     currentTime = 0.0;
+    gameEnd = false;
     currentPosition = Offset(screenWidth / 2, screenHeight / 2);
     targetPosition = Offset(screenWidth / 2, screenHeight / 2);
     itemList = [];

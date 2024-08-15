@@ -35,7 +35,6 @@ class MainPageViewModel extends _$MainPageViewModel with ChangeNotifier {
         gameData.currentPosition = _animation.value;
         notifyListeners();
       });
-
     Timer.periodic(const Duration(milliseconds: 10), (Timer timer) {
       if (settingData.gameStop || gameData.playerLife <= 0) {
         //정지상태면 타이머 X

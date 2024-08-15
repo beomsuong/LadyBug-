@@ -5,6 +5,7 @@ import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/game_data/item_impact/item_impact.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
+import 'package:lady_bug/game_end_diolog.dart';
 import 'package:lady_bug/item/item.dart';
 import 'package:lady_bug/view_model/main_page_view_model.dart';
 import 'package:lady_bug/player_character/player_character.dart';
@@ -43,6 +44,17 @@ class _MainPageState extends ConsumerState<MainPage>
     final viewModel = ref.watch(mainPageViewModelProvider);
     screenHeight = MediaQuery.sizeOf(context).height; // 화면 크기 변경하면 바로 변경
     screenWidth = MediaQuery.sizeOf(context).width; // 화면 크기 변경하면 바로 변경
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (gameData.gameEnd) {
+        gameData.gameEnd = false;
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const GameOverDialog();
+          },
+        );
+      }
+    });
     return Scaffold(
       body: Stack(
         children: [

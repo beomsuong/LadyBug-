@@ -154,6 +154,7 @@ class GameDescriptionDialog extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildItemDescription(
+                      icon: Icons.star,
                       iconColor: Colors.brown,
                       label: '쉴드',
                       description: '일정 시간 동안 무적 상태가 됩니다.',
@@ -161,6 +162,7 @@ class GameDescriptionDialog extends StatelessWidget {
                   ),
                   Expanded(
                     child: _buildItemDescription(
+                      icon: Icons.star,
                       iconColor: Colors.red,
                       label: '속도업',
                       description: '일정 시간 동안 이동 속도가 빨라집니다.',
@@ -168,6 +170,7 @@ class GameDescriptionDialog extends StatelessWidget {
                   ),
                   Expanded(
                     child: _buildItemDescription(
+                      icon: Icons.star,
                       iconColor: Colors.blue,
                       label: '속도다운',
                       description: '일정 시간 동안 적의 속도가 느려집니다.',
@@ -176,10 +179,25 @@ class GameDescriptionDialog extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              _buildItemDescription(
-                iconColor: Colors.green,
-                label: '적',
-                description: '적에게 맞으면 체력이 줄어듭니다.',
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildItemDescription(
+                      icon: Icons.star,
+                      iconColor: Colors.purple,
+                      label: '원형폭탄',
+                      description: '원형 폭탄을 생성해 적들을 없앱니다.',
+                    ),
+                  ),
+                  Expanded(
+                    child: _buildItemDescription(
+                      icon: Icons.circle,
+                      iconColor: Colors.green,
+                      label: '적',
+                      description: '적에게 맞으면 체력이 줄어듭니다.',
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(
@@ -212,6 +230,7 @@ class GameDescriptionDialog extends StatelessWidget {
 
   // 아이템 설명 빌더 함수
   Widget _buildItemDescription({
+    required IconData icon,
     required Color iconColor,
     required String label,
     required String description,
@@ -220,7 +239,7 @@ class GameDescriptionDialog extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
-          Icons.star,
+          icon,
           color: iconColor,
           size: 40,
         ),
