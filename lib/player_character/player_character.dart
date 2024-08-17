@@ -6,6 +6,7 @@ import 'package:lady_bug/game_data/enemy/enemy_model.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/item/item_model.dart';
+import 'package:lady_bug/view_model/sound_view_model.dart';
 
 class PlayerCharacter extends CustomPainter {
   PlayerCharacter();
@@ -130,6 +131,8 @@ class PlayerCharacter extends CustomPainter {
         //충돌 감지
         gameData.playerLife--;
         if (gameData.playerLife <= 0) {
+          SoundViewModel().playBackgroundMusic();
+          SoundViewModel().playEffectSound('game_over');
           gameData.gameEnd = true;
         }
         enemiesToRemove.add(gameData.enemyList[i]); //아이템 제거

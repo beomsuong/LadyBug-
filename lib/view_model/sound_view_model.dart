@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class SoundViewModel {
+  static final SoundViewModel _instance = SoundViewModel._internal();
+
+  factory SoundViewModel() {
+    return _instance;
+  }
+
+  SoundViewModel._internal() {
+    initialize();
+  }
+
   final AudioPlayer backgroundPlayer = AudioPlayer(); //배경음악 객체
   final AudioPlayer effectsPlayer = AudioPlayer(); //효과음 객체
   final Map<String, AudioSource> effects = {}; //효과음 저장
-
-  SoundViewModel() {
-    initialize();
-  }
 
   //사운드 로딩 및 시작
   Future<void> initialize() async {
@@ -61,5 +67,6 @@ class SoundViewModel {
 
   void dispose() {
     backgroundPlayer.dispose();
+    effectsPlayer.dispose();
   }
 }
