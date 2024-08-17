@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:lady_bug/game_data/item_impact/circle_item.dart';
-import 'package:lady_bug/game_data/enemy/enemy_model.dart';
+import 'package:lady_bug/item/item_impact/circle_item.dart';
+import 'package:lady_bug/enemy/enemy_model.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
 import 'package:lady_bug/item/item_model.dart';

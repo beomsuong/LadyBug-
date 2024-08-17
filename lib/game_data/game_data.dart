@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lady_bug/define.dart';
-import 'package:lady_bug/game_data/enemy/enemy_model.dart';
+import 'package:lady_bug/enemy/enemy_model.dart';
 import 'package:lady_bug/item/item_model.dart';
 
 class GameData {
@@ -15,7 +15,7 @@ class GameData {
   List<EnemyModel> enemyList = []; //적리스트
   List<dynamic> itemImpactList = []; //아이템 효과 그리기
 
-  int playerLife = 10;
+  int playerLife = 5;
   double booster = 0; //아이템 획득 시 가속 OR 감속
   double shieldTime = 0;
 
@@ -28,7 +28,7 @@ class GameData {
     itemList = [];
     enemyList = [];
     itemImpactList = [];
-    playerLife = 10;
+    playerLife = 5;
     booster = 0;
   }
 

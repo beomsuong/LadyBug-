@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
-import 'package:lady_bug/game_data/enemy/enemy.dart';
+import 'package:lady_bug/enemy/enemy.dart';
 import 'package:lady_bug/game_data/game_data.dart';
 import 'package:lady_bug/define.dart';
-import 'package:lady_bug/game_data/item_impact/item_impact.dart';
+import 'package:lady_bug/item/item_impact/item_impact.dart';
 import 'package:lady_bug/game_data/setting_data.dart';
 import 'package:lady_bug/game_end_diolog.dart';
 import 'package:lady_bug/item/item.dart';
